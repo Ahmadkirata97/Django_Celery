@@ -1,0 +1,70 @@
+services:
+
+  # Redis Service
+  redis:
+
+    container_name: redis 
+    image: redis:7.0.11-alpine
+
+ # Django Service 
+  django:
+
+    container_name: django
+    volumes:
+      - .:/usr/src/app/
+    build: 
+      context: .
+      dockerfile: DockerFiles/django.dockerfile
+
+    ports:
+      - 8001:8000
+    
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=cjLCnPANCpNCpoAWBfiacmKANOIOAIWDBncoiaWBd
+      - ALLOWED_HOSTS=local_host,127.0.0.1
+
+    command: python manage.py runserver 0.0.0.0:8000
+
+  # Celery Service 
+  celery1:
+    container_name: celery1
+    volumes:
+      - .:/usr/src/app/
+    build: 
+      context: .
+      dockerfile: DockerFiles/django.dockerfile
+      
+    # command: celery --app=dcalaries worker -l INFO
+
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=cjLCnPANCpNCpoAWBfiacmKANOIOAIWDBncoiaWBd
+      - ALLOWED_HOSTS=local_host,127.0.0.1
+    
+    depends_on:
+      - redis
+      - django
+
+  # Celery 2 Serveice 
+  celery2:
+    container_name: celery2
+    volumes:
+      - ./celeryworker:/usr/src/app/
+    build: 
+      context: .
+      dockerfile: celeryworker/django.dockerfile
+      
+    # command: celery --app=dcalaries worker -l INFO
+
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=cjLCnPANCpNCpoAWBfiacmKANOIOAIWDBncoiaWBd
+      - ALLOWED_HOSTS=local_host,127.0.0.1
+
+    depends_on:
+      - redis
+      - django
+ 
+
+
