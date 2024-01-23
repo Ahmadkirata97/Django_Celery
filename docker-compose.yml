@@ -47,24 +47,24 @@ services:
       - django
 
   # Celery 2 Serveice 
-  celery2:
-    container_name: celery2
-    volumes:
-      - ./celeryworker:/usr/src/app/
-    build: 
-      context: .
-      dockerfile: celeryworker/django.dockerfile
+  # celery2:
+  #   container_name: celery2
+  #   volumes:
+  #     - ./celeryworker:/usr/src/app/
+  #   build: 
+  #     context: .
+  #     dockerfile: celeryworker/django.dockerfile
       
     # command: celery --app=dcalaries worker -l INFO
 
-    environment:
-      - DEBUG=1
-      - SECRET_KEY=cjLCnPANCpNCpoAWBfiacmKANOIOAIWDBncoiaWBd
-      - ALLOWED_HOSTS=local_host,127.0.0.1
+    # environment:
+    #   - DEBUG=1
+    #   - SECRET_KEY=cjLCnPANCpNCpoAWBfiacmKANOIOAIWDBncoiaWBd
+    #   - ALLOWED_HOSTS=local_host,127.0.0.1
 
-    depends_on:
-      - redis
-      - django
+    # depends_on:
+    #   - redis
+    #   - django
  
 
 
