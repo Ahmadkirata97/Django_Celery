@@ -1,5 +1,14 @@
 services:
 
+  # Flower Service Form Monitoring And Manging Workers
+  flower:
+    image: mher/flower
+    container_name: flower
+    ports:
+    - 5555:5555
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
+
 
   # RabbitMQ Service
   rabbitmq:
